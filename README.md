@@ -9,7 +9,7 @@ A comprehensive full-stack project management application with intelligent task 
 
 <!-- > **Note**: First request to backend may take 30-60 seconds as the free tier spins up from sleep mode. -->
 
-## 🧪 Local testing (localhost)
+## Local testing (localhost)
 
 If you can't deploy to Render yet, you can run and test the full app locally (backend + frontend).
 
@@ -107,7 +107,7 @@ curl -s -X POST http://localhost:5070/api/projects/<PROJECT_ID>/tasks \
 
 </div>
 
-## 👤 Test Credentials
+## Test Credentials
 
 You can register a new account or use these test credentials:
 - **Email**: demo@example.com
@@ -159,7 +159,7 @@ You can register a new account or use these test credentials:
 
 ---
 
-## 📖 API Documentation
+## API Documentation
 
 ### Authentication Endpoints
 
@@ -264,7 +264,7 @@ DELETE /api/tasks/{taskId}
 Authorization: Bearer {token}
 ```
 
-### 🤖 Smart Scheduler Endpoint 
+### Smart Scheduler Endpoint 
 
 #### Generate Schedule
 ```http
@@ -318,7 +318,7 @@ Content-Type: application/json
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 project-management-system/
