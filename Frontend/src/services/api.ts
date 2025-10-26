@@ -12,9 +12,9 @@ import {
 } from '../types';
 
 // Add this at the top of the file
-const API_BASE_URL = (import.meta as any).env?.PROD
+const API_BASE_URL = /*(import.meta as any).env?.PROD
   ? 'https://project-manager-m4uh.onrender.com'  // Production
-  : '/api';  // Development (uses vite proxy)
+  : '/api';  // Development (uses vite proxy)*/ 'https://project-manager-m4uh.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
