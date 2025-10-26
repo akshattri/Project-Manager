@@ -9,6 +9,104 @@ A comprehensive full-stack project management application with intelligent task 
 
 <!-- > **Note**: First request to backend may take 30-60 seconds as the free tier spins up from sleep mode. -->
 
+## 🧪 Local testing (localhost)
+
+If you can't deploy to Render yet, you can run and test the full app locally (backend + frontend).
+
+Prerequisites
+- .NET 8 SDK
+- Node.js 18+ and npm
+- (Optional) sqlite3 CLI to inspect the DB
+
+1) Start the backend
+```bash
+cd /Users/akshat/Desktop/Appsian/Backend
+# restore & build once
+dotnet restore
+dotnet build
+
+# Run (dev)
+dotnet run
+```
+- Default local URLs (check console when running):
+  - HTTP: http://localhost:5070
+  - HTTPS: https://localhost:7093
+- If you see "Failed to create task" or NOT NULL errors, delete the DB (dev only):
+```bash
+cp projectmanagement.db projectmanagement.db.bak
+rm projectmanagement.db
+dotnet run
+```
+- To inspect the DB schema or content:
+```bash
+sqlite3 projectmanagement.db ".schema Tasks"
+sqlite3 projectmanagement.db "SELECT id, username, email FROM Users;"
+```
+
+2) Start the frontend
+```bash
+cd /Users/akshat/Desktop/Appsian/Frontend
+npm install
+npm run dev
+```
+- Frontend dev server default: http://localhost:5173
+- Ensure `Frontend/vite.config.ts` proxy points to the backend HTTP port (http://localhost:5070) or HTTPS port if you have dev certs.
+
+3) Quick API smoke tests (use the backend port reported by dotnet)
+- Register:
+```bash
+curl -s -X POST http://localhost:5070/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"localuser","email":"local@example.com","password":"Password123!"}' | jq
+```
+- Login (get token):
+```bash
+curl -s -X POST http://localhost:5070/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"local@example.com","password":"Password123!" }' | jq
+# copy "token" from response
+```
+- Create a project:
+```bash
+curl -s -X POST http://localhost:5070/api/projects \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{"title":"Local Project","description":"test"}' | jq
+```
+- Create a task:
+```bash
+curl -s -X POST http://localhost:5070/api/projects/<PROJECT_ID>/tasks \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{"title":"Local Task","dueDate":"2025-11-01T00:00:00Z"}' | jq
+```
+
+4) Troubleshooting tips
+- If frontend shows "Registration failed" or UI errors, open DevTools → Network to inspect request/response.
+- Confirm Authorization header contains Bearer token on protected calls.
+- If DB schema mismatches cause errors, either recreate DB (dev) or add an EF migration to drop unwanted columns.
+- Check backend console/log for full EF exception stack traces; they point to the failing column or constraint.
+
+---
+
+## 🖼️ Screenshots
+
+<div align="center">
+<!-- 
+### Login
+![Login](/docs/screenshots/login.png) -->
+
+### Dashboard
+![Dashboard](/Frontend/public/Screenshots/Dashboard.png)
+
+### Project details (tasks)
+![Project Details](/Frontend/public/Screenshots/project-details.png)
+
+### Smart Scheduler
+![Project Details](/Frontend/public/Screenshots/Smart-Scheduler.png)
+
+</div>
+
 ## 👤 Test Credentials
 
 You can register a new account or use these test credentials:
@@ -166,7 +264,7 @@ DELETE /api/tasks/{taskId}
 Authorization: Bearer {token}
 ```
 
-### 🤖 Smart Scheduler Endpoint (Bonus Feature)
+### 🤖 Smart Scheduler Endpoint 
 
 #### Generate Schedule
 ```http
@@ -217,59 +315,6 @@ Content-Type: application/json
 ```
 
 **Algorithm**: Uses topological sort with DFS to resolve task dependencies and detect circular dependencies.
-
----
-
-## 🏗️ Local Development Setup
-
-### Prerequisites
-- .NET 8 SDK ([Download](https://dotnet.microsoft.com/download/dotnet/8.0))
-- Node.js 18+ ([Download](https://nodejs.org/))
-- Git
-
-### Backend Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/project-management-system.git
-cd project-management-system
-
-# Navigate to backend directory
-cd Backend
-
-# Restore dependencies
-dotnet restore
-
-# Run the application
-dotnet run
-
-# Backend will be available at https://localhost:7000
-```
-
-### Frontend Setup
-
-```bash
-# Navigate to frontend directory (from project root)
-cd Frontend
-
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Frontend will be available at http://localhost:5173
-```
-
-### Database Setup
-
-The SQLite database is created automatically on first run. If you need to reset:
-
-```bash
-cd Backend
-rm projectmanagement.db
-dotnet run
-```
 
 ---
 
@@ -334,274 +379,12 @@ project-management-system/
 
 ---
 
-## 🧪 Testing the Smart Scheduler
-
-### Example Workflow
-
-1. **Create a Project**
-   - Login to the application
-   - Click "+ New Project"
-   - Enter: "Software Development"
-
-2. **Add Tasks with Dependencies**
-
-   | Order | Task Title | Est. Hours | Due Date | Dependencies |
-   |-------|-----------|------------|----------|--------------|
-   | 1 | Design API | 5 | 2025-10-25 | None |
-   | 2 | Implement Backend | 12 | 2025-10-28 | Design API |
-   | 3 | Build Frontend | 10 | 2025-10-30 | Design API |
-   | 4 | End-to-End Test | 8 | 2025-10-31 | Implement Backend, Build Frontend |
-
-3. **Generate Schedule**
-   - Click "🤖 Smart Schedule" button
-   - View the recommended order
-   - Tasks are automatically sorted by dependencies
-
-4. **Expected Result**
-   ```
-   Recommended Order:
-   1. Design API
-   2. Implement Backend
-   3. Build Frontend
-   4. End-to-End Test
-   ```
-
-### Circular Dependency Detection
-
-If you create tasks with circular dependencies (A → B → C → A), the Smart Scheduler will detect and reject them with an error message.
-
----
-
-## 🚀 Deployment
-
-### Backend Deployment (Render)
-
-1. Push code to GitHub
-2. Create new Web Service on Render
-3. Configure:
-   - **Build Command**: `dotnet restore && dotnet publish -c Release -o out`
-   - **Start Command**: `cd out && dotnet Backend.dll`
-   - **Environment Variables**:
-     - `ASPNETCORE_ENVIRONMENT=Production`
-     - `ASPNETCORE_URLS=http://0.0.0.0:$PORT`
-     - `Jwt__Key=YOUR_SECRET_KEY`
-
-### Frontend Deployment (Vercel)
-
-1. Push code to GitHub
-2. Import project to Vercel
-3. Configure:
-   - **Framework Preset**: Vite
-   - **Root Directory**: `Frontend`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-   - **Environment Variables**:
-     - `VITE_API_URL=https://your-backend.onrender.com`
-
-### Post-Deployment
-
-Update backend CORS to include your Vercel URL:
-
-```csharp
-// Backend/Program.cs
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins(
-            "http://localhost:5173",
-            "https://your-app.vercel.app"
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials();
-    });
-});
-```
-
----
-
-## 🎯 Assignment Requirements Met
-
-### Home Assignment 2 - Mini Project Manager (20 Credits)
-
-✅ **Authentication**
-- User registration with validation
-- Login with JWT tokens
-- Protected routes and endpoints
-
-✅ **Projects**
-- Create projects with title and description
-- List all user's projects
-- Delete projects (cascading to tasks)
-
-✅ **Tasks**
-- Create tasks with title, due date, and completion status
-- Update tasks (including completion toggle)
-- Delete tasks
-- Link tasks to parent projects
-
-✅ **Backend Requirements**
-- RESTful API with .NET 8 Core
-- Entity Framework Core with SQLite
-- JWT authentication
-- DataAnnotations for validation
-- Separation of concerns (DTOs, Services, Models, Controllers)
-
-✅ **Frontend Requirements**
-- React + TypeScript
-- Login/Register pages
-- Dashboard (project list)
-- Project details with task management
-- React Router for navigation
-- Form validation and error handling
-- JWT storage and reuse
-
-### Smart Scheduler API (10 Bonus Credits)
-
-✅ **Endpoint Implementation**
-- POST /api/v1/projects/{projectId}/schedule
-- Accepts tasks with dependencies
-- Returns recommended order
-
-✅ **Algorithm**
-- Topological sort with DFS
-- Circular dependency detection
-- Handles complex dependency graphs
-
-✅ **Additional Features**
-- Loading indicators
-- User feedback and error messages
-- Mobile-friendly design
-- Deployed on Render + Vercel
-
----
-
-## 🔒 Security Features
-
-- **Password Hashing**: BCrypt with salt
-- **JWT Tokens**: Secure authentication with 24-hour expiry
-- **Authorization**: User-specific data isolation
-- **Input Validation**: Server-side and client-side
-- **CORS Configuration**: Restricted to specific origins
-- **SQL Injection Prevention**: Entity Framework parameterized queries
-
----
-
-## 📊 Key Algorithms
-
-### Topological Sort (Smart Scheduler)
-
-**Purpose**: Order tasks based on dependencies
-
-**Approach**: Depth-First Search (DFS)
-
-**Time Complexity**: O(V + E) where V = tasks, E = dependencies
-
-**Features**:
-- Detects circular dependencies
-- Handles multiple independent paths
-- Respects all dependency constraints
-
-**Example**:
-```
-Input: A → B → D
-       A → C → D
-
-Output: [A, B, C, D] or [A, C, B, D]
-```
-
----
-
-## 🐛 Known Limitations
-
-- Free tier backend (Render) has cold start delay (~30-60 seconds)
-- SQLite not recommended for high-concurrency production use
-- No email verification for registration
-- No password reset functionality
-- No task priority levels (future enhancement)
-
----
-
-## 🔮 Future Enhancements
-
-- [ ] Task priority levels (High, Medium, Low)
-- [ ] Email notifications for due dates
-- [ ] Task comments and attachments
-- [ ] Team collaboration features
-- [ ] Calendar view for tasks
-- [ ] Advanced filtering and search
-- [ ] Export data to CSV/PDF
-- [ ] Task templates
-- [ ] Time tracking integration
-- [ ] Mobile apps (iOS/Android)
-
----
-
 ## 👨‍💻 Developer Information
 
-**Author**: [Your Name]
+**Author**: Akshat
 
 **Contact**: 
-- Email: your.email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
+- Email: akshatattri22@gmail.com
+- GitHub: [akshattri](https://github.com/akshattri)
+- LinkedIn: [Akshat](https://www.linkedin.com/in/akshat-attri-a0746424b/)
 
-**Assignment**: PLC Home Coding Assignment - October 2025
-
-**Credits Earned**: 
-- Home Assignment 2: 20 credits
-- Smart Scheduler API: 10 credits
-- **Total**: 30 credits
-
----
-
-## 📄 License
-
-This project was created as part of a coding assignment. All rights reserved.
-
----
-
-## 🙏 Acknowledgments
-
-- .NET 8 and Entity Framework Core documentation
-- React and TypeScript communities
-- Render and Vercel for free hosting
-- Claude AI for development assistance
-
----
-
-## 📞 Support
-
-If you encounter any issues:
-
-1. Check the [Issues](https://github.com/yourusername/project-management-system/issues) page
-2. Ensure all environment variables are set correctly
-3. Verify backend is running (may take 30-60s on first request)
-4. Check browser console for frontend errors
-5. Review API responses in Network tab
-
-For questions or bug reports, please open an issue on GitHub.
-
----
-
-## ✅ Quick Start Checklist
-
-- [ ] Clone repository
-- [ ] Install .NET 8 SDK
-- [ ] Install Node.js 18+
-- [ ] Run backend: `cd Backend && dotnet run`
-- [ ] Run frontend: `cd Frontend && npm install && npm run dev`
-- [ ] Open http://localhost:5173
-- [ ] Register a new account
-- [ ] Create a project
-- [ ] Add tasks with dependencies
-- [ ] Test Smart Scheduler
-
----
-
-**⭐ If you find this project helpful, please star the repository!**
-
-**🚀 Ready to deploy? Follow the deployment guide in the documentation.**
-
-**📚 Happy coding!**
