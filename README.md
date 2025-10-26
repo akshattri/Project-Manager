@@ -4,8 +4,8 @@ A comprehensive full-stack project management application with intelligent task 
 
 ## 🌐 Live Demo
 
-- **Frontend (Vercel)**: [https://project-manager-git-main-akshats-projects-bcb9d98f.vercel.app](https://project-manager-git-main-akshats-projects-bcb9d98f.vercel.app)
-<!-- - **Backend API (Render)**: [https://your-api.onrender.com](https://your-api.onrender.com) -->
+- **Frontend (Vercel)**: [https://project-management-eight-delta.vercel.app](https://project-management-eight-delta.vercel.app)
+- **Backend API (Render)**: [https://project-manager-m4uh.onrender.com](https://project-manager-m4uh.onrender.com)
 
 <!-- > **Note**: First request to backend may take 30-60 seconds as the free tier spins up from sleep mode. -->
 
