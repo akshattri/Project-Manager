@@ -44,15 +44,21 @@ export interface Task {
   isCompleted: boolean;
   createdAt: string;
   projectId: number;
+  estimatedHours: number;
+  dependencies: string[];
 }
 
 export interface CreateTaskRequest {
   title: string;
   dueDate?: string;
+  estimatedHours?: number;
+  dependencies?: string[];
 }
 
 export interface UpdateTaskRequest {
   title?: string;
   dueDate?: string;
   isCompleted?: boolean;
+  estimatedHours?: number;
+  dependencies?: string[];
 }
