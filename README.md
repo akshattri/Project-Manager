@@ -1,8 +1,8 @@
-# 📊 Project Management System with Smart Scheduler
+# Project Management System with Smart Scheduler
 
 A comprehensive full-stack project management application with intelligent task scheduling, built with .NET 8 and React + TypeScript.
 
-## 🌐 Live Demo
+## Live Demo
 
 - **Frontend (Vercel)**: [https://project-management-eight-delta.vercel.app](https://project-management-eight-delta.vercel.app)
 - **Backend API (Render)**: [https://project-manager-m4uh.onrender.com](https://project-manager-m4uh.onrender.com)
@@ -89,7 +89,7 @@ curl -s -X POST http://localhost:5070/api/projects/<PROJECT_ID>/tasks \
 
 ---
 
-## 🖼️ Screenshots
+## Screenshots
 
 <div align="center">
 <!-- 
@@ -115,29 +115,29 @@ You can register a new account or use these test credentials:
 
 ---
 
-## ✨ Features
+## Features
 
 ### Core Functionality
-- ✅ **User Authentication** - Secure JWT-based registration and login
-- ✅ **Project Management** - Create, view, and delete projects
-- ✅ **Task Management** - Add, edit, delete, and toggle task completion
-- ✅ **Task Dependencies** - Define which tasks must be completed before others
-- ✅ **Estimated Hours** - Track time estimates for each task
+- **User Authentication** - Secure JWT-based registration and login
+- **Project Management** - Create, view, and delete projects
+- **Task Management** - Add, edit, delete, and toggle task completion
+- **Task Dependencies** - Define which tasks must be completed before others
+- **Estimated Hours** - Track time estimates for each task
 
 ### Advanced Features
-- 🤖 **Smart Scheduler API** - AI-powered task scheduling using topological sort
+- **Smart Scheduler API** - AI-powered task scheduling using topological sort
   - Automatically orders tasks based on dependencies
   - Detects and prevents circular dependencies
   - Optimizes work sequence for maximum efficiency
-- 🌙 **Dark Mode** - Toggle between light and dark themes
-- 📱 **Mobile-Friendly** - Responsive design for all screen sizes
-- 🎨 **Modern UI** - Clean, intuitive interface with smooth animations
-- 📊 **Progress Tracking** - Visual progress bars and statistics
-- ⚡ **Real-time Updates** - Instant feedback on all operations
+- **Dark Mode** - Toggle between light and dark themes
+- **Mobile-Friendly** - Responsive design for all screen sizes
+- **Modern UI** - Clean, intuitive interface with smooth animations
+- **Progress Tracking** - Visual progress bars and statistics
+- **Real-time Updates** - Instant feedback on all operations
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 - **Framework**: .NET 8 Core (C#)
@@ -379,7 +379,7 @@ project-management-system/
 
 ---
 
-## 👨‍💻 Developer Information
+## Developer Information
 
 **Author**: Akshat
 

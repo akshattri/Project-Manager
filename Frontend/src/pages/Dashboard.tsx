@@ -127,7 +127,7 @@ const Dashboard = () => {
       {/* Header */}
       <div style={{ backgroundColor: cardBg, borderBottom: `1px solid ${borderColor}`, padding: '16px 24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: textColor }}>📊 Project Management</h1>
+          <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: textColor }}> Project Management</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: secondaryText, fontSize: '14px' }}>Welcome, <strong>{user?.username}</strong></span>
             <button
@@ -158,7 +158,7 @@ const Dashboard = () => {
                 fontWeight: '500',
               }}
             >
-              🤖 Smart Scheduler
+              Smart Scheduler
             </button>
             <button
               onClick={handleLogout}
@@ -512,7 +512,7 @@ const Dashboard = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 style={{ fontSize: '22px', fontWeight: '600', marginBottom: '12px', color: textColor }}>
-              🤖 Smart Scheduler
+              Smart Scheduler
             </h3>
             <p style={{ color: secondaryText, marginBottom: '24px', fontSize: '14px' }}>
               Let AI organize your tasks intelligently based on due dates and priorities.
@@ -534,7 +534,7 @@ const Dashboard = () => {
                     fontWeight: '500',
                   }}
                 >
-                  {schedulerLoading ? 'Generating...' : '✨ Generate Schedule'}
+                  {schedulerLoading ? 'Generating...' : 'Generate Schedule'}
                 </button>
               </div>
             ) : (
